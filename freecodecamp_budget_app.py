@@ -3,9 +3,11 @@ class Category:
         self.name = name
         self.ledger = []          
     
+    # adding transaction to ledger list as a dictionary with amount and optional description
     def deposit(self, amount, description = ""):
         self.ledger.append({"amount": amount, "description": description})
     
+    # first checking if withdraw is possible with chec
     def withdraw(self, amount, description = ""):
         if self.check_funds(amount):
             self.ledger.append({"amount": -(amount), "description": description} )
@@ -13,12 +15,14 @@ class Category:
         else:
             return False
 
+    # returns balance
     def get_balance(self):
         balance = 0
         for i in self.ledger:
             balance += i["amount"]
         return balance
     
+    # calling check funds again to move money from one object to another
     def transfer(self, amount, Category):
         if self.check_funds(amount):
             self.withdraw(amount,f"Transfer to {Category.name}")
@@ -27,12 +31,14 @@ class Category:
         else:
             return False
 
+    # returns boolean value, comparing passed amount with balance
     def check_funds(self, amount):
         if amount <= self.get_balance():
             return True
         else:
             return False
 
+    # printint formatted transactions and balance
     def __str__(self):
         title = self.name.center(30, "*")
         
@@ -48,8 +54,12 @@ class Category:
 
         return title + entries + total
     
+# returns a string bar chart of percentage spending per category object
+# takes list of Category objects as argument not a single object as argument 
 def create_spend_chart(categories):
     title = "Percentage spent by category\n"
+    
+    # calculating amount spent per category and maintaing a list for it (can also be done using a dictionary)
     spent_perc = []
     for category in categories:
         total = 0
@@ -58,14 +68,17 @@ def create_spend_chart(categories):
                 total += -item["amount"]
         spent_perc.append(total)
     
+    # adding items of spent per category list for percentage spent calculation
     total_spent = sum(spent_perc)
-   
+
+    # calculating and rouding down the percentage to nearest 10
     percentage = []
     for i in spent_perc:
         percent = 0
         percent = int((i/total_spent * 100) // 10) * 10
         percentage.append(percent)
    
+   # y - axis and bars
     graph = title
     for y in range(100, -1, -10):
         graph += f"{y:>3}|"
@@ -76,39 +89,21 @@ def create_spend_chart(categories):
                 graph += "   "
         graph += " \n"
 
+    # horizontal line
     graph += "    " + "-" * (3 * len(categories) + 1) + "\n"
 
+    # vertical category name
     max_len = max(len(category.name) for category in categories)
     for i in range(max_len):
+        # adding the space to bring names in alignment with bars before printing names
         graph += "     "
         for category in categories:
+            # adding each character horizontally name by name
             if i < len(category.name):
                 graph += (category.name[i] + "  ") 
             else:
                 graph += "   "
         graph += "\n"
     
+    # removing the extra new line with strip
     return graph.rstrip("\n")
-
-
-
-
-food = Category('Food')
-food.deposit(1000, 'deposit')
-food.withdraw(100.15, 'groceries')
-food.withdraw(150.89, 'dessert')
-food.withdraw(500, "protein")
-
-clothing = Category("Clothing")
-clothing.deposit(1000, "deposit")
-clothing.withdraw(200, "shirt")
-clothing.withdraw(150, "pants")
-clothing.withdraw(500, "shoes")
-
-auto = Category("Auto")
-auto.deposit(1000, "deposit")
-auto.withdraw(200, "fuel")
-auto.withdraw(100, "service")
-auto.withdraw(50, "air")
-
-print(create_spend_chart([food, clothing, auto]))
