@@ -54,8 +54,8 @@ class Category:
 
         return title + entries + total
     
-# returns a string bar chart of percentage spending per category object
-# takes list of Category objects as argument not a single object as argument 
+''' returns a string bar chart of percentage spending per category object
+takes list of Category objects as argument not a single object as argument '''
 def create_spend_chart(categories):
     title = "Percentage spent by category\n"
     
