@@ -16,9 +16,12 @@ class GameCharacter:
     
     @health.setter # setter to update health with validation
     def health(self, new_health):
-        if new_health < 0 or new_health > 100:
-            raise ValueError("Health can't be negative or greater than 100")
-        self._health = new_health
+        if new_health <= 0: 
+            self._health = 0 # not allowing negative health
+        elif new_health >= 100: 
+            self._health = 100 # caping health to 100
+        else: 
+            self._health = new_health
 
     @property # getter to check current mama
     def mana(self):
@@ -26,9 +29,12 @@ class GameCharacter:
     
     @mana.setter # setter for mana with validation
     def mana(self, new_mana):
-        if new_mana < 0 or new_mana > 50:
-            raise ValueError("Mana can't be negative or greater than 10")
-        self._mana = new_mana
+        if new_mana <= 0:
+            self._mana = 0 # not allowing negative mana
+        elif new_mana >= 50:
+            self.mana = 50 # caping mana to 50
+        else:
+            self._mana = new_mana
     
     @property # getter for current level
     def level(self):
@@ -42,14 +48,3 @@ class GameCharacter:
     
     def __str__(self):
         return f"Name: {self.name}\nLevel: {self.level}\nHealth: {self.health}\nMana: {self.mana}\n"
-    
-
-hero = GameCharacter('Kratos') # Creates a new character named Kratos
-print(hero)  # Displays the character's stats
-
-hero.health -= 30  # Decreases health by 30
-hero.mana -= 10    # Decreases mana by 10
-print(hero)  # Displays the updated stats
-
-hero.level_up()  # Levels up the character
-print(hero)  # Displays the stats after leveling up
