@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-
+# write comments and implement functions better way for git
 class Polygon(ABC):
     @abstractmethod
     def set_width(self):
