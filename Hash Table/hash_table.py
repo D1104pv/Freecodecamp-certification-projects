@@ -15,5 +15,12 @@ class HashTable:
         else:
             self.collection[hashed_key] = {key: value}
     
-    def remove(self):
-        pass
+    def remove(self, key):
+        hashed_value = hash(key)
+        if hashed_value in self.collection:
+            if len(self.collection[hashed_value] == 1):
+                del self.collection[hashed_value]
+            else:
+                del self.collection[hashed_value][key]
+        else:
+            pass
